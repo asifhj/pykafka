@@ -401,7 +401,9 @@ class SimpleConsumer():
                     log.debug("Set offset for partition %s to %s",
                               owned_partition.partition.id,
                               pres.offset)
-                    owned_partition.set_offset(pres.offset)
+                    # offset fetch requests return the next offset to consume,
+                    # so account for this here by passing offset - 1
+                    owned_partition.set_offset(pres.offset - 1)
 
             # If any partitions didn't have a committed offset,
             # then reset those partition's offsets.
@@ -710,7 +712,7 @@ class OwnedPartition(object):
         return PartitionOffsetCommitRequest(
             self.partition.topic.name,
             self.partition.id,
-            self.next_offset,
+            self.last_offset_consumed + 1,
             int(time.time() * 1000),
             b'pykafka'
         )
