@@ -710,7 +710,7 @@ class OwnedPartition(object):
         return PartitionOffsetCommitRequest(
             self.partition.topic.name,
             self.partition.id,
-            self.last_offset_consumed,
+            self.next_offset,
             int(time.time() * 1000),
             b'pykafka'
         )
