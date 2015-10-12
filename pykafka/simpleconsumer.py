@@ -400,7 +400,7 @@ class SimpleConsumer():
                 else:
                     log.debug("Set offset for partition %s to %s",
                               owned_partition.partition.id,
-                              pres.offset)
+                              pres.offset - 1)
                     # offset fetch requests return the next offset to consume,
                     # so account for this here by passing offset - 1
                     owned_partition.set_offset(pres.offset - 1)
