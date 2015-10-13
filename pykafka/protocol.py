@@ -172,10 +172,13 @@ class Message(Message, Serializable):
         self.produce_attempt = produce_attempt
 
     def __len__(self):
-        size = 4 + 1 + 1 + 4 + 4 + len(self.value)
-        if self.partition_key is not None:
-            size += len(self.partition_key)
-        return size
+        if not self.value==None:
+            size = 4 + 1 + 1 + 4 + 4 + len(self.value)
+            if self.partition_key is not None:
+                size += len(self.partition_key)
+            return size
+        else:
+            return 0
 
     @classmethod
     def decode(self, buff, msg_offset=-1, partition_id=-1):
